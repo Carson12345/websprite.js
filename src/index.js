@@ -6,7 +6,7 @@ import { sleep, twoBoxesCollide } from "./util";
 const parElement = document.querySelector("body");
 const elem = document.createElement("div");
 const existingCanvas = document.querySelectorAll('.websprite-canvas-class');
-const cid = `meta-gate-world-${existingCanvas.length}`;
+const cid = `websprite-${existingCanvas.length}`;
 const targetWidth = window.innerWidth;
 const targetHeight = window.innerHeight;
 elem.innerHTML = `<canvas id="${cid}" class="websprite-canvas-class" style="position: fixed; bottom: 0px; right: 0px; z-index: 10013; pointer-events: none;" id="websprite-canvas" width="${targetWidth * window.devicePixelRatio}" height="${targetHeight * window.devicePixelRatio}"></canvas>`
@@ -24,7 +24,7 @@ const main = async () => {
   canvas.style.height = `${targetHeight}px`;
   let ctx = canvas.getContext('2d');
 
-  const baby = new Character({
+  const webspriteInstance = new Character({
     initialCoordinates: {
       x: 0,
       y: 0
@@ -55,8 +55,13 @@ const main = async () => {
     }
   });
 
-  await baby.arriveWorld();
-  registerCharacter(baby);
+  await webspriteInstance.arriveWorld();
+  registerCharacter(webspriteInstance);
+
+  await webspriteInstance.speak({
+    content: 'hello!'
+  })
+
   document.querySelector('body').addEventListener('click', (event) => {
     let x = event.clientX;
     let y = event.clientY;

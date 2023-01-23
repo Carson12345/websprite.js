@@ -11,7 +11,7 @@ import serve from 'rollup-plugin-serve'
 export default {
     input: 'src/content-index.js',
     output: {
-        file: 'dist/content-script.js',
+        file: 'dist/index.js',
         format: 'cjs'
     },
     plugins: [
