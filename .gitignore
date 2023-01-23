@@ -7,3 +7,6 @@ node_modules
 
 # build
 dist/*
+
+# npm
+.npmrc

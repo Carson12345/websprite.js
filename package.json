@@ -2,7 +2,8 @@
   "name": "websprite.js",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "type": "module",
+  "main": "dist/content-script.js",
   "scripts": {
     "build": "rollup --config rollup.config.js --watch",
     "build:cloud": "rollup --config rollup.config.js",
