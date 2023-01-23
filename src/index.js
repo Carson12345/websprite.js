@@ -2,23 +2,24 @@ import { Character } from "./classes";
 import { getSpeechToText } from "./speech-to-text";
 import { sleep, twoBoxesCollide } from "./util";
 
-// init construct
-const parElement = document.querySelector("body");
-const elem = document.createElement("div");
-const existingCanvas = document.querySelectorAll('.websprite-canvas-class');
-const cid = `websprite-${existingCanvas.length}`;
-const targetWidth = window.innerWidth;
-const targetHeight = window.innerHeight;
-elem.innerHTML = `<canvas id="${cid}" class="websprite-canvas-class" style="position: fixed; bottom: 0px; right: 0px; z-index: 10013; pointer-events: none;" id="websprite-canvas" width="${targetWidth * window.devicePixelRatio}" height="${targetHeight * window.devicePixelRatio}"></canvas>`
-parElement.appendChild(elem);
+window.WebSpriteInit = async (config, callback) => {
 
-const charactersInTheScene = {};
+  // init construct
+  const parElement = document.querySelector("body");
+  const elem = document.createElement("div");
+  const existingCanvas = document.querySelectorAll('.websprite-canvas-class');
+  const cid = `websprite-${existingCanvas.length}`;
+  const targetWidth = window.innerWidth;
+  const targetHeight = window.innerHeight;
+  elem.innerHTML = `<canvas id="${cid}" class="websprite-canvas-class" style="position: fixed; bottom: 0px; right: 0px; z-index: 10013; pointer-events: none;" id="websprite-canvas" width="${targetWidth * window.devicePixelRatio}" height="${targetHeight * window.devicePixelRatio}"></canvas>`
+  parElement.appendChild(elem);
 
-function registerCharacter(characterInstance) {
-  charactersInTheScene[characterInstance.characterId] = characterInstance;
-}
+  const charactersInTheScene = {};
 
-const main = async () => {
+  function registerCharacter(characterInstance) {
+    charactersInTheScene[characterInstance.characterId] = characterInstance;
+  }
+
   let canvas = document.getElementById(cid);
   canvas.style.width = `${targetWidth}px`;
   canvas.style.height = `${targetHeight}px`;
@@ -51,16 +52,13 @@ const main = async () => {
       FACING_IDLE: 14,
       ATTACK_LEFT: 5,
       ATTACK_RIGHT: 7,
-      CYCLE_LOOP: [0, 1, 2, 3, 4]
+      CYCLE_LOOP: [0, 1, 2, 3, 4],
+      rememberLastPosition: config.rememberLastPosition
     }
   });
 
   await webspriteInstance.arriveWorld();
   registerCharacter(webspriteInstance);
-
-  await webspriteInstance.speak({
-    content: 'hello!'
-  })
 
   document.querySelector('body').addEventListener('click', (event) => {
     let x = event.clientX;
@@ -89,6 +87,5 @@ const main = async () => {
   }
 
   animate();
+  callback(webspriteInstance);
 }
-
-main();

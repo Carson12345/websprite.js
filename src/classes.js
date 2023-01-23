@@ -36,6 +36,7 @@ export class Sprite {
         this.positionX = this.initialX;
         this.positionY = this.initialY;
 
+        this.rememberLastPosition = spriteConfig.rememberLastPosition;
         this.ctx = ctx;
         this.canvas = canvas;
 
@@ -79,8 +80,10 @@ export class Sprite {
             positionY: this.positionY,
             currentHealthPoint: this.currentHealthPoint
         };
-        console.log('memorize basic info now ...', `${this.characterId}-basic-info`, JSON.stringify(info));
-        await setLocalStorage(`${this.characterId}-basic-info`, JSON.stringify(info))
+        if (this.rememberLastPosition) {
+            console.log('memorize basic info now ...', `${this.characterId}-basic-info`, JSON.stringify(info));
+            await setLocalStorage(`${this.characterId}-basic-info`, JSON.stringify(info))
+        }
     }
 
     // utils
@@ -114,25 +117,27 @@ export class Sprite {
             // load stored data
             let info = null;
             const basicInfoKey = `${this.characterId}-basic-info`;
-            const infoStr = await getLocalStorage(basicInfoKey);
+            if (this.rememberLastPosition) {
+                const infoStr = await getLocalStorage(basicInfoKey);
 
-            if (infoStr) {
-                try {
-                    info = JSON.parse(infoStr);
-                    this.initialX = info.positionX;
-                    this.initialY = info.positionY;
-                    this.positionX = this.initialX;
-                    this.positionY = this.initialY;
-                    if (info.currentHealthPoint) {
-                        this.currentHealthPoint = info.currentHealthPoint;
+                if (infoStr) {
+                    try {
+                        info = JSON.parse(infoStr);
+                        this.initialX = info.positionX;
+                        this.initialY = info.positionY;
+                        this.positionX = this.initialX;
+                        this.positionY = this.initialY;
+                        if (info.currentHealthPoint) {
+                            this.currentHealthPoint = info.currentHealthPoint;
+                        }
+                        if (this.currentHealthPoint === 0) {
+                            console.log('reborn');
+                            this.reborn();
+                        }
+                        console.log('used last location');
+                    } catch (error) {
+                        console.log(error);
                     }
-                    if (this.currentHealthPoint === 0) {
-                        console.log('reborn');
-                        this.reborn();
-                    }
-                    console.log('used last location');
-                } catch (error) {
-                    console.log(error);
                 }
             }
 
