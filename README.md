@@ -24,4 +24,4 @@ Easily embed a programmable sprite to your website
             });
         </script>
     </body>
-</html>```
+</html>
