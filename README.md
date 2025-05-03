@@ -1,7 +1,7 @@
 # websprite.js
 Easily embed a programmable sprite to your website
 
-demo: [https://www.cy2.tech/](https://webspritejs.static.domains/)
+demo: [https://webspritejs.static.domains/](https://webspritejs.static.domains/)
 
 
 
